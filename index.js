@@ -31,7 +31,6 @@ function getResults(stateCode, maxResults=10) {
       throw new Error(response.statusText);
     })
     .then(responseJson => {
-      console.log(responseJson);
       displayResults(responseJson);
     })
     .catch(err => {
@@ -41,20 +40,21 @@ function getResults(stateCode, maxResults=10) {
 
 function displayResults(responseJson) {
   $('#results-list').empty();
+  //Work around.Entering an invalid state code still showed a successful request, so this message runs if the responseJson data section is empty.
   if (responseJson.data.length === 0) {
     $('#results').append('<h2 class = "error">Sorry, no results found. Please retry your search with a valid state code</h2>');
     $('#results').removeClass('hidden');
   }
   else {
     for (let i =0; i < responseJson.data.length; i++) {
-    $('#results-list').append(
-      `<li><h3>${responseJson.data[i].fullName}</h3>
+      $('#results-list').append(
+        `<li><h3>${responseJson.data[i].fullName}</h3>
         <p>${responseJson.data[i].description}</p>
         <a href="${responseJson.data[i].url}">${responseJson.data[i].url}</a></li>`
-    );
-    $('#results').removeClass('hidden');
+      );
+      $('#results').removeClass('hidden');
+    }
   }
-}
 }
 
 function handleSubmit() {
