@@ -21,7 +21,6 @@ function getResults(stateCode, maxResults=10) {
 
   const queryString = formatQueryParams(params);
   const url = searchURL + '?' + queryString;
-  console.log(url);
 
 
   fetch(url)
@@ -42,7 +41,12 @@ function getResults(stateCode, maxResults=10) {
 
 function displayResults(responseJson) {
   $('#results-list').empty();
-  for (let i =0; i < responseJson.data.length; i++) {
+  if (responseJson.data.length === 0) {
+    $('#results').append('<h2 class = "error">Sorry, no results found. Please retry your search with a valid state code</h2>');
+    $('#results').removeClass('hidden');
+  }
+  else {
+    for (let i =0; i < responseJson.data.length; i++) {
     $('#results-list').append(
       `<li><h3>${responseJson.data[i].fullName}</h3>
         <p>${responseJson.data[i].description}</p>
@@ -50,6 +54,7 @@ function displayResults(responseJson) {
     );
     $('#results').removeClass('hidden');
   }
+}
 }
 
 function handleSubmit() {
