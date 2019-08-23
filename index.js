@@ -12,15 +12,16 @@ function formatQueryParams(params) {
 }
 
 
-function getResults(stateCode, maxResults=10) {
+function getResults(states, maxResults=10) {
   const params = {
-    stateCode: stateCode,
+    stateCode: states,
     api_key: apiKey,
     limit: maxResults
   };
 
   const queryString = formatQueryParams(params);
   const url = searchURL + '?' + queryString;
+  console.log(url);
 
 
   fetch(url)
@@ -60,13 +61,12 @@ function displayResults(responseJson) {
 function handleSubmit() {
   $('#parksearch').on('submit', function (event) {
     event.preventDefault();
-    let stateCode = $('#searchbar').val();
+    let input = $('#searchbar').val();
+    let states = input.split(' ');
     let resultsNum = $('#resultsNum').val();
     $('#searchbar').val('');
     $('#resultsNum').val(10);
-    stateCode.trim();
-    resultsNum.trim();
-    getResults(stateCode, resultsNum);
+    getResults(states, resultsNum);
   });
 }
 
